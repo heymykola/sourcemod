@@ -151,6 +151,10 @@ PlayerManager::~PlayerManager()
 
 void PlayerManager::OnSourceModStartup(bool late)
 {
+	/* To Be Removed: Debugging Purposes */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("PlayerManager::OnSourceModStartup");
+	
 	/* Initialize all players */
 
 	m_PlayerCount = 0;
@@ -498,6 +502,10 @@ void PlayerManager::RunAuthChecks()
 
 bool PlayerManager::OnClientConnect(edict_t *pEntity, const char *pszName, const char *pszAddress, char *reject, int maxrejectlen)
 {
+	/* To Be Removed: Debugging Purposes */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("PlayerManager::OnClientConnect");
+	
 	int client = IndexOfEdict(pEntity);
 	CPlayer *pPlayer = &m_Players[client];
 	++m_PlayersSinceActive;
@@ -521,7 +529,7 @@ bool PlayerManager::OnClientConnect(edict_t *pEntity, const char *pszName, const
 
 	/* To Be Removed: Debugging Purposes */
 	if (sm_debug_connect.GetBool())
-		logger->LogMessage("PlayerManager::OnClientConnect -> CPlayer::Initialize");
+		logger->LogMessage("PlayerManager::OnClientConnect -> pPlayer::Initialize");
 	pPlayer->Initialize(pszName, pszAddress, pEntity);
 	
 	/* Get the client's language */
@@ -584,6 +592,10 @@ bool PlayerManager::OnClientConnect(edict_t *pEntity, const char *pszName, const
 
 bool PlayerManager::OnClientConnect_Post(edict_t *pEntity, const char *pszName, const char *pszAddress, char *reject, int maxrejectlen)
 {
+	/* To Be Removed: Debugging Purposes */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("PlayerManager::OnClientConnect_Post");
+	
 	int client = IndexOfEdict(pEntity);
 	bool orig_value = META_RESULT_ORIG_RET(bool);
 	CPlayer *pPlayer = &m_Players[client];
@@ -623,6 +635,10 @@ bool PlayerManager::OnClientConnect_Post(edict_t *pEntity, const char *pszName, 
 
 void PlayerManager::OnClientPutInServer(edict_t *pEntity, const char *playername)
 {
+	/* To Be Removed: Debugging Purposes */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("PlayerManager::OnClientPutInServer");
+	
 	cell_t res;
 	int client = IndexOfEdict(pEntity);
 	CPlayer *pPlayer = &m_Players[client];
@@ -2012,6 +2028,10 @@ CPlayer::CPlayer()
 
 void CPlayer::Initialize(const char *name, const char *ip, edict_t *pEntity)
 {
+	/* To Be Removed: Debugging Purposes */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("CPlayer::Initialize");
+	
 	m_IsConnected = true;
 	m_Ip.assign(ip);
 	m_pEdict = pEntity;
@@ -2066,9 +2086,6 @@ void CPlayer::Initialize(const char *name, const char *ip, edict_t *pEntity)
 	}
 #endif
 
-	/* To Be Removed: Debugging Purposes */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("CPlayer::Initialize -> UpdateAuthIds");
 	UpdateAuthIds();
 }
 
@@ -2096,6 +2113,10 @@ void CPlayer::Connect()
 
 void CPlayer::UpdateAuthIds()
 {
+	/* To Be Removed: Debugging Purposes */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("CPlayer::UpdateAuthIds");
+	
 	if (m_IsAuthorized || (!SetEngineString() && !SetCSteamID()))
 		return;
 	
@@ -2694,3 +2715,4 @@ void CPlayer::PrintToConsole(const char *pMsg)
 
 	engine->ClientPrintf(m_pEdict, pMsg);
 }
+
