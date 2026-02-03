@@ -164,6 +164,10 @@ void PlayerManager::OnSourceModStartup(bool late)
 
 void PlayerManager::OnSourceModAllInitialized()
 {
+	/* To Be Removed: Debugging Purposes */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("PlayerManager::OnSourceModAllInitialized");
+	
 	SH_ADD_HOOK(IServerGameClients, ClientConnect, serverClients, SH_MEMBER(this, &PlayerManager::OnClientConnect), false);
 	SH_ADD_HOOK(IServerGameClients, ClientConnect, serverClients, SH_MEMBER(this, &PlayerManager::OnClientConnect_Post), true);
 	SH_ADD_HOOK(IServerGameClients, ClientPutInServer, serverClients, SH_MEMBER(this, &PlayerManager::OnClientPutInServer), true);
@@ -515,6 +519,9 @@ bool PlayerManager::OnClientConnect(edict_t *pEntity, const char *pszName, const
 		OnClientDisconnect_Post(pPlayer->GetEdict());
 	}
 
+	/* To Be Removed: Debugging Purposes */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("PlayerManager::OnClientConnect -> CPlayer::Initialize");
 	pPlayer->Initialize(pszName, pszAddress, pEntity);
 	
 	/* Get the client's language */
@@ -2048,7 +2055,7 @@ void CPlayer::Initialize(const char *name, const char *ip, edict_t *pEntity)
 	{
 		m_pIClient = nullptr;
 
-		const char *skip = g_pGameConf ? g_pGameConf->GetKeyValue("SkipNetchanIClient") : nullptr;
+		const char *skip = g_pGameConf->GetKeyValue("SkipNetchanIClient");
 		if (skip == nullptr || strcmp(skip, "yes") != 0)
 		{
 			if (INetChannel *pNetChan = static_cast<INetChannel *>(engine->GetPlayerNetInfo(m_iIndex)))
@@ -2059,6 +2066,9 @@ void CPlayer::Initialize(const char *name, const char *ip, edict_t *pEntity)
 	}
 #endif
 
+	/* To Be Removed: Debugging Purposes */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("CPlayer::Initialize -> UpdateAuthIds");
 	UpdateAuthIds();
 }
 
@@ -2115,7 +2125,7 @@ void CPlayer::UpdateAuthIds()
 	}
 	
 	EUniverse steam2universe = m_SteamId.GetEUniverse();
-	const char *keyUseInvalidUniverse = g_pGameConf ? g_pGameConf->GetKeyValue("UseInvalidUniverseInSteam2IDs") : nullptr;
+	const char *keyUseInvalidUniverse = g_pGameConf->GetKeyValue("UseInvalidUniverseInSteam2IDs");
 	if (keyUseInvalidUniverse && atoi(keyUseInvalidUniverse) == 1)
 	{
 		steam2universe = k_EUniverseInvalid;
