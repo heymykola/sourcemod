@@ -2086,12 +2086,20 @@ void CPlayer::Connect()
 
 void CPlayer::UpdateAuthIds()
 {
+	/* To Be Removed: Logging Output */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("CPlayer::UpdateAuthIds");
+	
 	if (m_IsAuthorized || (!SetEngineString() && !SetCSteamID()))
 		return;
 	
 	// Now cache Steam2/3 rendered ids
 	if (IsFakeClient())
 	{
+		/* To Be Removed: Logging Output */
+		if (sm_debug_connect.GetBool())
+			logger->LogMessage("CPlayer::UpdateAuthIds -> fake client");
+		
 		m_Steam2Id = "BOT";
 		m_Steam3Id = "BOT";
 		return;
@@ -2101,12 +2109,20 @@ void CPlayer::UpdateAuthIds()
 	{
 		if (g_HL2.IsLANServer())
 		{
+			/* To Be Removed: Logging Output */
+			if (sm_debug_connect.GetBool())
+				logger->LogMessage("CPlayer::UpdateAuthIds -> LAN server");
+			
 			m_Steam2Id = "STEAM_ID_LAN";
 			m_Steam3Id = "STEAM_ID_LAN";
 			return;
 		}
 		else
 		{
+			/* To Be Removed: Logging Output */
+			if (sm_debug_connect.GetBool())
+				logger->LogMessage("CPlayer::UpdateAuthIds -> STEAM_ID_PENDING");
+			
 			m_Steam2Id = "STEAM_ID_PENDING";
 			m_Steam3Id = "STEAM_ID_PENDING";
 		}
@@ -2118,6 +2134,10 @@ void CPlayer::UpdateAuthIds()
 	const char *keyUseInvalidUniverse = g_pGameConf->GetKeyValue("UseInvalidUniverseInSteam2IDs");
 	if (keyUseInvalidUniverse && atoi(keyUseInvalidUniverse) == 1)
 	{
+		/* To Be Removed: Logging Output */
+		if (sm_debug_connect.GetBool())
+			logger->LogMessage("CPlayer::UpdateAuthIds -> using invalid universe");
+		
 		steam2universe = k_EUniverseInvalid;
 	}
 	
@@ -2125,6 +2145,10 @@ void CPlayer::UpdateAuthIds()
 	ke::SafeSprintf(szAuthBuffer, sizeof(szAuthBuffer), "STEAM_%u:%u:%u", steam2universe, m_SteamId.GetAccountID() & 1, m_SteamId.GetAccountID() >> 1);
 	
 	m_Steam2Id = szAuthBuffer;
+
+	/* To Be Removed: Logging Output */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("CPlayer::UpdateAuthIds -> Steam2Id=%s", m_Steam2Id.c_str());
 	
 	// TODO: make sure all hl2sdks' steamclientpublic.h have k_unSteamUserDesktopInstance.
 	if (m_SteamId.GetUnAccountInstance() == 1 /* k_unSteamUserDesktopInstance */)
@@ -2137,15 +2161,33 @@ void CPlayer::UpdateAuthIds()
 	}
 	
 	m_Steam3Id = szAuthBuffer;
+
+	/* To Be Removed: Logging Output */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("CPlayer::UpdateAuthIds -> Steam3Id=%s", m_Steam3Id.c_str());
 }
 
 bool CPlayer::SetEngineString()
 {
+	/* To Be Removed: Logging Output */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("CPlayer::SetEngineString");
+	
 	const char *authstr = engine->GetPlayerNetworkIDString(m_pEdict);
+
+	/* To Be Removed: Logging Output */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("CPlayer::SetEngineString -> authstr=%s", authstr ? authstr : "(null)");
+	
 	if (!authstr || m_AuthID.compare(authstr) == 0)
 		return false;
 
 	m_AuthID = authstr;
+
+	/* To Be Removed: Logging Output */
+	if (sm_debug_connect.GetBool())
+		logger->LogMessage("CPlayer::SetEngineString -> m_AuthID updated to %s", m_AuthID.c_str());
+	
 	SetCSteamID();
 	return true;
 }
@@ -2684,3 +2726,4 @@ void CPlayer::PrintToConsole(const char *pMsg)
 
 	engine->ClientPrintf(m_pEdict, pMsg);
 }
+
