@@ -151,10 +151,6 @@ PlayerManager::~PlayerManager()
 
 void PlayerManager::OnSourceModStartup(bool late)
 {
-	/* To Be Removed: Debugging Purposes */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("PlayerManager::OnSourceModStartup");
-	
 	/* Initialize all players */
 
 	m_PlayerCount = 0;
@@ -168,10 +164,6 @@ void PlayerManager::OnSourceModStartup(bool late)
 
 void PlayerManager::OnSourceModAllInitialized()
 {
-	/* To Be Removed: Debugging Purposes */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("PlayerManager::OnSourceModAllInitialized");
-	
 	SH_ADD_HOOK(IServerGameClients, ClientConnect, serverClients, SH_MEMBER(this, &PlayerManager::OnClientConnect), false);
 	SH_ADD_HOOK(IServerGameClients, ClientConnect, serverClients, SH_MEMBER(this, &PlayerManager::OnClientConnect_Post), true);
 	SH_ADD_HOOK(IServerGameClients, ClientPutInServer, serverClients, SH_MEMBER(this, &PlayerManager::OnClientPutInServer), true);
@@ -502,10 +494,6 @@ void PlayerManager::RunAuthChecks()
 
 bool PlayerManager::OnClientConnect(edict_t *pEntity, const char *pszName, const char *pszAddress, char *reject, int maxrejectlen)
 {
-	/* To Be Removed: Debugging Purposes */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("PlayerManager::OnClientConnect");
-	
 	int client = IndexOfEdict(pEntity);
 	CPlayer *pPlayer = &m_Players[client];
 	++m_PlayersSinceActive;
@@ -527,9 +515,6 @@ bool PlayerManager::OnClientConnect(edict_t *pEntity, const char *pszName, const
 		OnClientDisconnect_Post(pPlayer->GetEdict());
 	}
 
-	/* To Be Removed: Debugging Purposes */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("PlayerManager::OnClientConnect -> pPlayer::Initialize");
 	pPlayer->Initialize(pszName, pszAddress, pEntity);
 	
 	/* Get the client's language */
@@ -592,10 +577,6 @@ bool PlayerManager::OnClientConnect(edict_t *pEntity, const char *pszName, const
 
 bool PlayerManager::OnClientConnect_Post(edict_t *pEntity, const char *pszName, const char *pszAddress, char *reject, int maxrejectlen)
 {
-	/* To Be Removed: Debugging Purposes */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("PlayerManager::OnClientConnect_Post");
-	
 	int client = IndexOfEdict(pEntity);
 	bool orig_value = META_RESULT_ORIG_RET(bool);
 	CPlayer *pPlayer = &m_Players[client];
@@ -635,10 +616,6 @@ bool PlayerManager::OnClientConnect_Post(edict_t *pEntity, const char *pszName, 
 
 void PlayerManager::OnClientPutInServer(edict_t *pEntity, const char *playername)
 {
-	/* To Be Removed: Debugging Purposes */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("PlayerManager::OnClientPutInServer");
-	
 	cell_t res;
 	int client = IndexOfEdict(pEntity);
 	CPlayer *pPlayer = &m_Players[client];
@@ -2028,10 +2005,6 @@ CPlayer::CPlayer()
 
 void CPlayer::Initialize(const char *name, const char *ip, edict_t *pEntity)
 {
-	/* To Be Removed: Debugging Purposes */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("CPlayer::Initialize");
-	
 	m_IsConnected = true;
 	m_Ip.assign(ip);
 	m_pEdict = pEntity;
@@ -2073,15 +2046,10 @@ void CPlayer::Initialize(const char *name, const char *ip, edict_t *pEntity)
 	else
   #endif
 	{
-		m_pIClient = nullptr;
-
-		const char *skip = g_pGameConf->GetKeyValue("SkipNetchanIClient");
-		if (skip == nullptr || strcmp(skip, "yes") != 0)
+		INetChannel *pNetChan = static_cast<INetChannel *>(engine->GetPlayerNetInfo(m_iIndex));
+		if (pNetChan)
 		{
-			if (INetChannel *pNetChan = static_cast<INetChannel *>(engine->GetPlayerNetInfo(m_iIndex)))
-			{
-				m_pIClient = static_cast<IClient *>(pNetChan->GetMsgHandler());
-			}
+			m_pIClient = static_cast<IClient *>(pNetChan->GetMsgHandler());
 		}
 	}
 #endif
@@ -2113,20 +2081,12 @@ void CPlayer::Connect()
 
 void CPlayer::UpdateAuthIds()
 {
-	/* To Be Removed: Logging Output */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("CPlayer::UpdateAuthIds");
-	
 	if (m_IsAuthorized || (!SetEngineString() && !SetCSteamID()))
 		return;
 	
 	// Now cache Steam2/3 rendered ids
 	if (IsFakeClient())
 	{
-		/* To Be Removed: Logging Output */
-		if (sm_debug_connect.GetBool())
-			logger->LogMessage("CPlayer::UpdateAuthIds -> fake client");
-		
 		m_Steam2Id = "BOT";
 		m_Steam3Id = "BOT";
 		return;
@@ -2136,20 +2096,12 @@ void CPlayer::UpdateAuthIds()
 	{
 		if (g_HL2.IsLANServer())
 		{
-			/* To Be Removed: Logging Output */
-			if (sm_debug_connect.GetBool())
-				logger->LogMessage("CPlayer::UpdateAuthIds -> LAN server");
-			
 			m_Steam2Id = "STEAM_ID_LAN";
 			m_Steam3Id = "STEAM_ID_LAN";
 			return;
 		}
 		else
 		{
-			/* To Be Removed: Logging Output */
-			if (sm_debug_connect.GetBool())
-				logger->LogMessage("CPlayer::UpdateAuthIds -> STEAM_ID_PENDING");
-			
 			m_Steam2Id = "STEAM_ID_PENDING";
 			m_Steam3Id = "STEAM_ID_PENDING";
 		}
@@ -2161,10 +2113,6 @@ void CPlayer::UpdateAuthIds()
 	const char *keyUseInvalidUniverse = g_pGameConf->GetKeyValue("UseInvalidUniverseInSteam2IDs");
 	if (keyUseInvalidUniverse && atoi(keyUseInvalidUniverse) == 1)
 	{
-		/* To Be Removed: Logging Output */
-		if (sm_debug_connect.GetBool())
-			logger->LogMessage("CPlayer::UpdateAuthIds -> using invalid universe");
-		
 		steam2universe = k_EUniverseInvalid;
 	}
 	
@@ -2172,10 +2120,6 @@ void CPlayer::UpdateAuthIds()
 	ke::SafeSprintf(szAuthBuffer, sizeof(szAuthBuffer), "STEAM_%u:%u:%u", steam2universe, m_SteamId.GetAccountID() & 1, m_SteamId.GetAccountID() >> 1);
 	
 	m_Steam2Id = szAuthBuffer;
-
-	/* To Be Removed: Logging Output */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("CPlayer::UpdateAuthIds -> Steam2Id=%s", m_Steam2Id.c_str());
 	
 	// TODO: make sure all hl2sdks' steamclientpublic.h have k_unSteamUserDesktopInstance.
 	if (m_SteamId.GetUnAccountInstance() == 1 /* k_unSteamUserDesktopInstance */)
@@ -2188,33 +2132,15 @@ void CPlayer::UpdateAuthIds()
 	}
 	
 	m_Steam3Id = szAuthBuffer;
-
-	/* To Be Removed: Logging Output */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("CPlayer::UpdateAuthIds -> Steam3Id=%s", m_Steam3Id.c_str());
 }
 
 bool CPlayer::SetEngineString()
 {
-	/* To Be Removed: Logging Output */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("CPlayer::SetEngineString");
-	
 	const char *authstr = engine->GetPlayerNetworkIDString(m_pEdict);
-
-	/* To Be Removed: Logging Output */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("CPlayer::SetEngineString -> authstr=%s", authstr ? authstr : "(null)");
-	
 	if (!authstr || m_AuthID.compare(authstr) == 0)
 		return false;
 
 	m_AuthID = authstr;
-
-	/* To Be Removed: Logging Output */
-	if (sm_debug_connect.GetBool())
-		logger->LogMessage("CPlayer::SetEngineString -> m_AuthID updated to %s", m_AuthID.c_str());
-	
 	SetCSteamID();
 	return true;
 }
@@ -2242,6 +2168,15 @@ bool CPlayer::SetCSteamID()
 		}
 	}
 #else
+	const char *pAuth = m_AuthID.c_str(); /* Guard for non-Steam / forked engines. */
+	if (!pAuth || !pAuth[0]
+		|| strcmp(pAuth, "UNKNOWN") == 0
+		|| strcmp(pAuth, "STEAM_ID_PENDING") == 0
+		|| strcmp(pAuth, "STEAM_ID_LAN") == 0)
+	{
+		return false;
+	}
+
 	const CSteamID *steamId = engine->GetClientSteamID(m_pEdict);
 	if (steamId)
 	{
@@ -2753,4 +2688,3 @@ void CPlayer::PrintToConsole(const char *pMsg)
 
 	engine->ClientPrintf(m_pEdict, pMsg);
 }
-
