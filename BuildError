@@ -1,0 +1,45 @@
+[7228] cl /MT /W3 /Oy- /Z7 /EHsc /GR- /TP /std:c++17 /D_CRT_SECURE_NO_DEPRECATE /D_CRT_SECURE_NO_WARNINGS /D_CRT_NONSTDC_NO_DEPRECATE /D_ITERATOR_DEBUG_LEVEL=0 /DWIN32 /D_WINDOWS /DSOURCEMOD_BUILD /DSM_USE_VERSIONLIB /DSM_GENERATED_BUILD /DSE_BLOODYGOODTIME=4 /DSE_BLADE=19 /DSE_BMS=11 /DSE_CONTAGION=15 /DSE_CS2=25 /DSE_CSGO=23 /DSE_CSS=6 /DSE_DARKMESSIAH=2 /DSE_DEADLOCK=27 /DSE_DODS=8 /DSE_DOI=21 /DSE_DOTA=24 /DSE_EPISODEONE=1 /DSE_EYE=5 /DSE_HL2DM=7 /DSE_INSURGENCY=20 /DSE_LEFT4DEAD=13 /DSE_LEFT4DEAD2=16 /DSE_MCV=22 /DSE_MOCK=26 /DSE_NUCLEARDAWN=14 /DSE_ORANGEBOX=3 /DSE_PORTAL2=18 /DSE_PVKII=10 /DSE_SDK2013=9 /DSE_ALIENSWARM=17 /DSE_TF2=12 /DSOURCE_ENGINE=26 /DGAME_DLL /DCOMPILER_MSVC /DCOMPILER_MSVC32 /D_ALLOW_KEYWORD_MACROS /I ..\..\..\..\public /I ..\..\..\includes /I ..\..\..\..\versionlib /I ..\..\..\..\..\metamod-source\core /I ..\..\..\..\..\metamod-source\core\sourcehook /I ..\..\..\..\..\hl2sdk-mock\public /I ..\..\..\..\..\hl2sdk-mock\public\engine /I ..\..\..\..\..\hl2sdk-mock\public\mathlib /I ..\..\..\..\..\hl2sdk-mock\public\vstdlib /I ..\..\..\..\..\hl2sdk-mock\public\tier0 /I ..\..\..\..\..\hl2sdk-mock\public\tier1 /I ..\..\..\..\..\hl2sdk-mock\public\toolframework /I ..\..\..\..\..\hl2sdk-mock\public\game\server /I ..\..\..\..\..\hl2sdk-mock\game\shared /I ..\..\..\..\..\hl2sdk-mock\common /I ..\..\..\..\core /I ..\..\..\..\core\sdk /I ..\..\..\..\public\extensions /I ..\..\..\..\sourcepawn\include /I ..\..\..\..\public\amtl\amtl /I ..\..\..\..\public\amtl /I ..\..\..\.. /showIncludes /nologo /c C:\AlliedModders\sourcemod\core\HalfLife2.cpp /FoHalfLife2.obj
+HalfLife2.cpp
+C:\AlliedModders\hl2sdk-mock\public\mathlib/mathlib.h(32): warning C4244: 'return': conversion from 'float' to 'int', possible loss of data
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1356): error C2977: 'CUtlVector': too many template arguments
+C:\AlliedModders\hl2sdk-mock\public\tier1\utlvector.h(8): note: see declaration of 'CUtlVector'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1356): error C2641: cannot deduce template arguments for 'CUtlVector'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1356): note: 'CUtlVector': no matching overloaded function found
+C:\AlliedModders\hl2sdk-mock\public\tier1\utlvector.h(8): note: could be 'CUtlVector<T> CUtlVector(void)'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1356): note: 'CUtlVector<T> CUtlVector(void)': could not deduce template argument for 'T'
+C:\AlliedModders\hl2sdk-mock\public\tier1\utlvector.h(8): note: or       'CUtlVector<T> CUtlVector(CUtlVector<T>)'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1356): note: 'CUtlVector<T> CUtlVector(CUtlVector<T>)': expects 1 arguments - 0 provided
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1357): error C2065: 'CUtlMemory': undeclared identifier
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1357): error C2275: 'CUtlString': expected an expression instead of a type
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1357): error C2977: 'CUtlVector': too many template arguments
+C:\AlliedModders\hl2sdk-mock\public\tier1\utlvector.h(8): note: see declaration of 'CUtlVector'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1357): error C2143: syntax error: missing ')' before '>'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1357): error C2059: syntax error: '>'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1357): error C2059: syntax error: ')'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1362): error C2662: 'int CUtlVector<T>::Count(void) const': cannot convert 'this' pointer from 'CUtlVector' to 'const CUtlVector<T> &'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1362): note: Reason: cannot convert from 'CUtlVector' to 'const CUtlVector<T>'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1362): note: Conversion requires a second user-defined-conversion operator or constructor
+C:\AlliedModders\hl2sdk-mock\public\tier1\utlvector.h(24): note: see declaration of 'CUtlVector<T>::Count'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1362): note: while trying to match the argument list '()'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1370): error C2678: binary '[': no operator found which takes a left-hand operand of type 'CUtlVector' (or there is no acceptable conversion)
+C:\AlliedModders\hl2sdk-mock\public\tier1\utlvector.h(23): note: could be 'T &CUtlVector<T>::operator [](int)'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1370): note: 'T &CUtlVector<T>::operator [](int)': cannot convert 'this' pointer from 'CUtlVector' to 'CUtlVector<T> &'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1370): note: Reason: cannot convert from 'CUtlVector' to 'CUtlVector<T>'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1370): note: Conversion requires a second user-defined-conversion operator or constructor
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1370): note: while trying to match the argument list '(CUtlVector, int)'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1370): error C2660: 'strcmp': function does not take 1 arguments
+C:\Program Files (x86)\Windows Kits\10\include\10.0.22621.0\ucrt\string.h(100): note: see declaration of 'strcmp'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1370): note: while trying to match the argument list '(const char *)'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1374): error C3861: 'FreeUtlVectorUtlString': identifier not found
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1380): error C2678: binary '[': no operator found which takes a left-hand operand of type 'CUtlVector' (or there is no acceptable conversion)
+C:\AlliedModders\hl2sdk-mock\public\tier1\utlvector.h(23): note: could be 'T &CUtlVector<T>::operator [](int)'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1380): note: 'T &CUtlVector<T>::operator [](int)': cannot convert 'this' pointer from 'CUtlVector' to 'CUtlVector<T> &'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1380): note: Reason: cannot convert from 'CUtlVector' to 'CUtlVector<T>'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1380): note: Conversion requires a second user-defined-conversion operator or constructor
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1380): note: while trying to match the argument list '(CUtlVector, int)'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1380): error C2660: 'ke::SafeStrcpy': function does not take 2 arguments
+C:\AlliedModders\sourcemod\public\amtl\amtl\am-string.h(199): note: see declaration of 'ke::SafeStrcpy'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1380): note: while trying to match the argument list '(char *, size_t)'
+C:\AlliedModders\sourcemod\core\HalfLife2.cpp(1382): error C3861: 'FreeUtlVectorUtlString': identifier not found
+
+Build failed: core\sourcemod.2.mock\windows-x86\HalfLife2.obj
